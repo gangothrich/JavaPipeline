@@ -1,25 +1,31 @@
+
 pipeline {
-     agent any
-         stages {
-         stage('Checkout') {
-             steps { 
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
                 checkout scm
-                 }
-             }
-         stage('Build and Test') {
-             steps { 
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
                 bat 'mvn clean test'
-                   }
-             }
-         stage('Package') {
-              steps { 
-                bat 'mvn package' 
-                 }
-             }
-         }
-post {
-always {
-archiveArtifacts artifacts: 'target/*.jar'
-, allowEmptyArchive: true }
-}
+            }
+        }
+
+        stage('Package') {
+            steps {
+                bat 'mvn package'
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'target/*.jar',
+                             allowEmptyArchive: true
+        }
+    }
 }
